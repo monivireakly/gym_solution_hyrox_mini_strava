@@ -123,6 +123,70 @@ h1, h2, h3, h4 {
 .tv-border-glow  { animation: borderGlow 2s ease-in-out infinite; }
 .tv-count-in     { animation: countUp    0.4s ease-out both; }
 
+/* ---- TV aurora background ---- */
+@keyframes blobDrift1 {
+  0%, 100% { transform: translate(0%,   0%)   scale(1);    }
+  25%       { transform: translate(4%,  -3%)   scale(1.06); }
+  50%       { transform: translate(7%,   5%)   scale(0.97); }
+  75%       { transform: translate(-2%,  3%)   scale(1.04); }
+}
+@keyframes blobDrift2 {
+  0%, 100% { transform: translate(0%,   0%)   scale(1);    }
+  25%       { transform: translate(-5%,  4%)   scale(1.08); }
+  50%       { transform: translate( 2%, -6%)   scale(0.95); }
+  75%       { transform: translate( 4%,  2%)   scale(1.05); }
+}
+@keyframes blobDrift3 {
+  0%, 100% { transform: translate(0%,   0%)   scale(1);    }
+  33%       { transform: translate( 3%, -4%)   scale(1.07); }
+  66%       { transform: translate(-4%,  3%)   scale(0.96); }
+}
+@keyframes bgShift {
+  0%, 100% { opacity: 1;    }
+  50%       { opacity: 0.85; }
+}
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.04; }
+  50%       { opacity: 0.08; }
+}
+
+.tv-blob-1 {
+  position: absolute;
+  width: 70vw; height: 70vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,109,119,0.55) 0%, transparent 70%);
+  top: -20%; left: -15%;
+  filter: blur(80px);
+  animation: blobDrift1 28s ease-in-out infinite;
+  pointer-events: none;
+}
+.tv-blob-2 {
+  position: absolute;
+  width: 55vw; height: 55vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,201,212,0.25) 0%, transparent 70%);
+  bottom: -15%; right: -10%;
+  filter: blur(100px);
+  animation: blobDrift2 35s ease-in-out infinite;
+  pointer-events: none;
+}
+.tv-blob-3 {
+  position: absolute;
+  width: 45vw; height: 45vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,77,84,0.6) 0%, transparent 70%);
+  top: 30%; right: 15%;
+  filter: blur(120px);
+  animation: blobDrift3 22s ease-in-out infinite;
+  pointer-events: none;
+}
+.tv-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,201,212,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,201,212,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
 /* ---- Kiosk background rings ---- */
 .ring-bg {
   position: absolute;
