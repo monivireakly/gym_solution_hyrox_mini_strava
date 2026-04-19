@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { QRCodeSVG } from 'qrcode.react'
 import Avatar from '@/components/Avatar'
 import { isAtRisk } from '@/lib/atrisk'
 
@@ -20,6 +21,7 @@ export default function MembersPage() {
   const [showAdd, setShowAdd] = useState(false)
   const [editMember, setEditMember] = useState<Member | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [cardMember, setCardMember] = useState<Member | null>(null)
 
   const fetchMembers = useCallback(async () => {
     setLoading(true)
@@ -113,19 +115,10 @@ export default function MembersPage() {
                       )}
                     </td>
                     <td>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setEditMember(m)}
-                          className="text-muted hover:text-sea text-sm transition-colors"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => setDeleteId(m.id)}
-                          className="text-muted hover:text-red-500 text-sm transition-colors"
-                        >
-                          Delete
-                        </button>
+                      <div className="flex items-center gap-3">
+                        <button onClick={() => setCardMember(m)} className="text-muted hover:text-cyan-brand text-sm transition-colors">Card</button>
+                        <button onClick={() => setEditMember(m)} className="text-muted hover:text-sea text-sm transition-colors">Edit</button>
+                        <button onClick={() => setDeleteId(m.id)} className="text-muted hover:text-red-500 text-sm transition-colors">Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -167,6 +160,38 @@ export default function MembersPage() {
             fetchMembers()
           }}
         />
+      )}
+
+      {/* Card QR modal */}
+      {cardMember && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-surface rounded-3xl p-8 max-w-xs w-full shadow-2xl text-center animate-scale-in">
+            <h2 className="font-display font-bold text-xl text-app-text mb-1">{cardMember.name}</h2>
+            <p className="text-muted text-sm mb-5">Member check-in card</p>
+            <div className="flex justify-center mb-5">
+              <div className="bg-white p-4 rounded-2xl shadow-lg border border-sea-light">
+                <QRCodeSVG
+                  value={`${typeof window !== 'undefined' ? window.location.origin : ''}/card/${cardMember.id}`}
+                  size={180}
+                  bgColor="#FFFFFF"
+                  fgColor="#006D77"
+                  level="M"
+                />
+              </div>
+            </div>
+            <p className="text-xs text-muted mb-5">Scan to instantly check in — no PIN needed</p>
+            <div className="flex gap-3">
+              <button onClick={() => setCardMember(null)}
+                className="flex-1 border border-sea-light text-muted font-semibold py-2.5 rounded-xl hover:border-sea transition-colors text-sm">
+                Close
+              </button>
+              <button onClick={() => window.print()}
+                className="flex-1 bg-sea text-white font-display font-semibold py-2.5 rounded-xl hover:bg-sea-dark transition-colors text-sm">
+                Print
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Delete confirm */}

@@ -8,11 +8,11 @@ const MOCK = { name: 'Alex Johnson', emoji: '🦁', color: '#006D77', streak: 14
 
 type Phase = 'tv' | 'scanning' | 'entering' | 'loading' | 'confirmed'
 
-const PHASE_TV_WAIT      = 3000
-const SCAN_TRANSITION    = 1200
-const PIN_DIGIT_INTERVAL = 450
-const LOADING_WAIT       = 1000
-const CONFIRMED_SECS     = 6
+const PHASE_TV_WAIT      = 5000
+const SCAN_TRANSITION    = 2000
+const PIN_DIGIT_INTERVAL = 600
+const LOADING_WAIT       = 1500
+const CONFIRMED_SECS     = 8
 
 /* ── TV screen (left panel) ─────────────────────── */
 function TVScreen({ scanning }: { scanning: boolean }) {
@@ -202,7 +202,7 @@ export default function DemoPage() {
 
   const phases: { key: Phase; label: string }[] = [
     { key: 'tv',        label: 'TV display'  },
-    { key: 'scanning',  label: 'Scanning'    },
+    { key: 'scanning',  label: 'Card scan'   },
     { key: 'entering',  label: 'PIN entry'   },
     { key: 'loading',   label: 'Verifying'   },
     { key: 'confirmed', label: 'Checked in!' },
