@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { QRCodeSVG } from 'qrcode.react'
 import Avatar from '@/components/Avatar'
 import { isAtRisk } from '@/lib/atrisk'
 
@@ -116,7 +115,7 @@ export default function MembersPage() {
                     </td>
                     <td>
                       <div className="flex items-center gap-3">
-                        <button onClick={() => setCardMember(m)} className="text-muted hover:text-cyan-brand text-sm transition-colors">Card</button>
+                        <button onClick={() => setCardMember(m)} className="text-muted hover:text-cyan-brand text-sm transition-colors">NFC</button>
                         <button onClick={() => setEditMember(m)} className="text-muted hover:text-sea text-sm transition-colors">Edit</button>
                         <button onClick={() => setDeleteId(m.id)} className="text-muted hover:text-red-500 text-sm transition-colors">Delete</button>
                       </div>
@@ -162,36 +161,9 @@ export default function MembersPage() {
         />
       )}
 
-      {/* Card QR modal */}
+      {/* NFC card-write modal */}
       {cardMember && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-surface rounded-3xl p-8 max-w-xs w-full shadow-2xl text-center animate-scale-in">
-            <h2 className="font-display font-bold text-xl text-app-text mb-1">{cardMember.name}</h2>
-            <p className="text-muted text-sm mb-5">Member check-in card</p>
-            <div className="flex justify-center mb-5">
-              <div className="bg-white p-4 rounded-2xl shadow-lg border border-sea-light">
-                <QRCodeSVG
-                  value={`${typeof window !== 'undefined' ? window.location.origin : ''}/card/${cardMember.id}`}
-                  size={180}
-                  bgColor="#FFFFFF"
-                  fgColor="#006D77"
-                  level="M"
-                />
-              </div>
-            </div>
-            <p className="text-xs text-muted mb-5">Scan to instantly check in — no PIN needed</p>
-            <div className="flex gap-3">
-              <button onClick={() => setCardMember(null)}
-                className="flex-1 border border-sea-light text-muted font-semibold py-2.5 rounded-xl hover:border-sea transition-colors text-sm">
-                Close
-              </button>
-              <button onClick={() => window.print()}
-                className="flex-1 bg-sea text-white font-display font-semibold py-2.5 rounded-xl hover:bg-sea-dark transition-colors text-sm">
-                Print
-              </button>
-            </div>
-          </div>
-        </div>
+        <NFCCardModal member={cardMember} onClose={() => setCardMember(null)} />
       )}
 
       {/* Delete confirm */}
@@ -288,6 +260,50 @@ function MemberModal({
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  )
+}
+
+function NFCCardModal({ member, onClose }: { member: Member; onClose: () => void }) {
+  const [copied, setCopied] = useState(false)
+
+  function copyId() {
+    navigator.clipboard.writeText(member.id)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-surface rounded-3xl p-7 max-w-sm w-full shadow-2xl animate-scale-in">
+        <h2 className="font-display font-bold text-xl text-app-text mb-1">{member.name}</h2>
+        <p className="text-muted text-sm mb-5">Write this ID to the member&apos;s NFC card</p>
+
+        {/* ID display */}
+        <div className="bg-sea-light rounded-xl p-4 mb-4">
+          <p className="text-xs text-muted font-display uppercase tracking-wider mb-2">Member ID (UUID)</p>
+          <p className="font-mono text-sm text-sea-dark break-all leading-relaxed select-all">{member.id}</p>
+        </div>
+
+        {/* Instructions */}
+        <ol className="text-xs text-muted space-y-1.5 mb-5 list-decimal list-inside">
+          <li>Open <strong>NFC Tools</strong> (iOS / Android) on your phone</li>
+          <li>Tap <strong>Write → Add a record → Text</strong></li>
+          <li>Paste the UUID above and save</li>
+          <li>Hold phone over NFC card/sticker to write</li>
+        </ol>
+
+        <div className="flex gap-3">
+          <button onClick={onClose}
+            className="flex-1 border border-sea-light text-muted font-semibold py-2.5 rounded-xl hover:border-sea transition-colors text-sm">
+            Close
+          </button>
+          <button onClick={copyId}
+            className="flex-1 bg-sea text-white font-display font-semibold py-2.5 rounded-xl hover:bg-sea-dark transition-colors text-sm">
+            {copied ? 'Copied ✓' : 'Copy ID'}
+          </button>
+        </div>
       </div>
     </div>
   )

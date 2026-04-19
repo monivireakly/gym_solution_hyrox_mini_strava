@@ -17,7 +17,7 @@ import { fileURLToPath } from 'url'
 
 /* ── Load .env.local ────────────────────────────── */
 const __dir = dirname(fileURLToPath(import.meta.url))
-const envPath = resolve(__dir, '..', '.env.local')
+const envPath = resolve(__dir, '..', '.env')
 try {
   const raw = readFileSync(envPath, 'utf-8')
   for (const line of raw.split('\n')) {

@@ -164,7 +164,7 @@ export default async function CheckInPage({ params }: { params: { id: string } }
 
         {/* Countdown */}
         <div className="pb-6">
-          <CountdownRedirect seconds={12} redirectTo="/enter" />
+          <CountdownRedirect seconds={12} redirectTo="/" />
         </div>
       </div>
     </div>

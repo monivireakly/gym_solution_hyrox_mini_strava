@@ -1,4 +1,5 @@
 import LiveCheckIns from '@/components/LiveCheckIns'
+import NFCListener from '@/components/NFCListener'
 import Link from 'next/link'
 
 export default function TVDisplay() {
@@ -12,6 +13,9 @@ export default function TVDisplay() {
       <div className="tv-blob-2" />
       <div className="tv-blob-3" />
       <div className="tv-grid" />
+
+      {/* ── NFC card reader — listens for USB HID keyboard bursts ── */}
+      <NFCListener />
 
       {/* ── Content ── */}
       <div className="relative z-10 flex flex-col min-h-screen px-10 py-8">
