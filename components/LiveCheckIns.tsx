@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
-import { avatarEmoji, avatarColor } from '@/lib/avatar'
+import { avatarEmoji, avatarColor, avatarInitials } from '@/lib/avatar'
 import { calcStats } from '@/lib/stats'
 
 const MAX_ENTRIES = 10
@@ -116,9 +116,58 @@ function LoadingSkeleton() {
   )
 }
 
-/* ─── Stat pill ─────────────────────────────────── */
-function FireIcon() {
-  return <span className="tv-fire-wiggle inline-block">🔥</span>
+/* ─── Icons ─────────────────────────────────────── */
+function FlameIcon() {
+  return (
+    <svg className="tv-fire-wiggle" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C9 8 7 11 7 15a5 5 0 0010 0c0-4-2-7-5-13zm-1 16a2.5 2.5 0 01-1.5-.5c.5.1 1 .1 1.5-.1.4.4.9.6 1.5.6a2.5 2.5 0 01-1.5 0z"/>
+    </svg>
+  )
+}
+
+function DumbbellIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="9" width="4" height="6" rx="1"/>
+      <rect x="18" y="9" width="4" height="6" rx="1"/>
+      <rect x="6" y="11" width="4" height="2" rx="0"/>
+      <rect x="14" y="11" width="4" height="2" rx="0"/>
+      <line x1="10" y1="12" x2="14" y2="12"/>
+    </svg>
+  )
+}
+
+function ChartIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="3" y="13" width="4" height="8" rx="1"/>
+      <rect x="10" y="8" width="4" height="13" rx="1"/>
+      <rect x="17" y="4" width="4" height="17" rx="1"/>
+    </svg>
+  )
+}
+
+function CalendarIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <rect x="3" y="4" width="18" height="18" rx="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+  )
+}
+
+function TrophyIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 9V2h12v7a6 6 0 01-12 0z"/>
+      <path d="M6 2H3a2 2 0 00-2 2v1a5 5 0 005 5"/>
+      <path d="M18 2h3a2 2 0 012 2v1a5 5 0 01-5 5"/>
+      <line x1="12" y1="15" x2="12" y2="20"/>
+      <line x1="8" y1="20" x2="16" y2="20"/>
+    </svg>
+  )
 }
 
 function StatPill({
@@ -132,17 +181,17 @@ function StatPill({
 }) {
   return (
     <div
-      className="flex items-center gap-1 px-2.5 py-1 rounded-full tv-count-in"
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full tv-count-in"
       style={{
         animationDelay: `${delay}ms`,
         background: highlight ? 'rgba(0,201,212,0.15)' : 'rgba(255,255,255,0.08)',
         border: `1px solid ${highlight ? 'rgba(0,201,212,0.3)' : 'rgba(255,255,255,0.1)'}`,
       }}>
-      <span className="text-xs leading-none">{icon}</span>
-      <span className={`font-display font-bold text-xs ${highlight ? 'text-cyan-brand' : 'text-white/70'}`}>
+      <span className={`text-sm leading-none ${highlight ? 'text-cyan-brand' : 'text-white/60'}`}>{icon}</span>
+      <span className={`font-display font-bold text-sm ${highlight ? 'text-cyan-brand' : 'text-white/70'}`}>
         {value}
       </span>
-      <span className="text-white/30 text-[10px]">{label}</span>
+      <span className="text-white/35 text-xs">{label}</span>
     </div>
   )
 }
@@ -166,25 +215,34 @@ function CheckInCard({ entry }: { entry: Entry }) {
 
       {/* Glow blob behind avatar */}
       <div
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full blur-2xl tv-glow-pulse pointer-events-none"
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full blur-3xl tv-glow-pulse pointer-events-none"
         style={{ background: entry.color }}
       />
 
-      <div className="relative flex items-center gap-4 px-5 py-3.5">
+      <div className="relative flex items-center gap-5 px-6 py-5">
         {/* Avatar */}
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 tv-emoji-float"
-          style={{
-            background: entry.color,
-            boxShadow: `0 4px 16px ${entry.color}55`,
-          }}>
-          {entry.emoji}
-        </div>
+        {(() => {
+          const initials = avatarInitials(entry.name)
+          return (
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, ${entry.color}ee 0%, ${entry.color}88 100%)`,
+                boxShadow: `0 6px 24px ${entry.color}55`,
+              }}>
+              <span
+                className="font-display font-black text-white leading-none tracking-tight select-none"
+                style={{ fontSize: initials.length === 1 ? '1.75rem' : '1.15rem' }}>
+                {initials}
+              </span>
+            </div>
+          )
+        })()}
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1.5">
-            <p className="font-display font-black text-white text-base leading-none truncate">
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <p className="font-display font-black text-white text-2xl leading-none truncate tracking-tight capitalize">
               {entry.name}
             </p>
             {entry.fresh && (
@@ -197,14 +255,14 @@ function CheckInCard({ entry }: { entry: Entry }) {
           </div>
 
           <div className="flex items-center flex-wrap gap-1.5">
-            <StatPill icon={<FireIcon />} value={entry.streak}       label="streak"    highlight={entry.streak >= 7} />
-            <StatPill icon="💪"          value={entry.total}         label="sessions"  />
-            <StatPill icon="📊"          value={`${entry.consistency}%`} label="rate" highlight={entry.consistency >= 80} />
+            <StatPill icon={<FlameIcon />}    value={entry.streak}              label="streak"   highlight={entry.streak >= 7} />
+            <StatPill icon={<DumbbellIcon />} value={entry.total}               label="sessions" />
+            <StatPill icon={<ChartIcon />}    value={`${entry.consistency}%`}   label="rate"     highlight={entry.consistency >= 80} />
             {entry.thisWeek > 0 && (
-              <StatPill icon="📅" value={entry.thisWeek} label="this wk" />
+              <StatPill icon={<CalendarIcon />} value={entry.thisWeek} label="this wk" />
             )}
             {entry.longestStreak > entry.streak && entry.longestStreak > 0 && (
-              <StatPill icon="🏆" value={`${entry.longestStreak}d`} label="best" />
+              <StatPill icon={<TrophyIcon />} value={`${entry.longestStreak}d`} label="best" />
             )}
           </div>
         </div>
@@ -212,12 +270,12 @@ function CheckInCard({ entry }: { entry: Entry }) {
         {/* Time / live badge */}
         <div className="flex flex-col items-end gap-1 flex-shrink-0">
           {entry.fresh ? (
-            <span className="text-[10px] font-display font-black px-2.5 py-1 rounded-full tracking-wider"
+            <span className="text-xs font-display font-black px-3 py-1.5 rounded-full tracking-widest"
               style={{ background: 'rgba(0,201,212,0.2)', color: '#00C9D4', border: '1px solid rgba(0,201,212,0.4)' }}>
               LIVE
             </span>
           ) : (
-            <span className="text-white/25 text-xs">{timeAgo(entry.at)}</span>
+            <span className="text-white/30 text-sm font-display">{timeAgo(entry.at)}</span>
           )}
         </div>
       </div>
@@ -244,7 +302,7 @@ function TickerFeed({ entries }: { entries: Entry[] }) {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 10,
+          gap: 14,
           animation: `marqueeDown ${duration}s linear infinite`,
           willChange: 'transform',
         }}>

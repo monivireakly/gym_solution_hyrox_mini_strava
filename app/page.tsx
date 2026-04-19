@@ -58,7 +58,7 @@ export default function TVDisplay() {
 
         {/* Feed — centred, max width so it reads well on a 4K TV */}
         <main className="flex-1 flex items-start justify-center">
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-5xl">
             <LiveCheckIns />
           </div>
         </main>
