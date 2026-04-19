@@ -177,6 +177,12 @@ h1, h2, h3, h4 {
   animation: blobDrift3 22s ease-in-out infinite;
   pointer-events: none;
 }
+/* ---- Vertical ticker / marquee ---- */
+@keyframes marqueeDown {
+  from { transform: translateY(-50%); }
+  to   { transform: translateY(0%);   }
+}
+
 .tv-grid {
   position: absolute; inset: 0;
   background-image:
