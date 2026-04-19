@@ -60,6 +60,69 @@ h1, h2, h3, h4 {
 .animate-scale-in  { animation: scaleIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
 .animate-slide-up  { animation: slideUp 0.4s ease-out both; }
 
+/* ---- TV live-feed animations ---- */
+@keyframes slideInTop {
+  0%   { opacity: 0; transform: translateY(-48px) scale(0.92); }
+  65%  { opacity: 1; transform: translateY(5px)   scale(1.02); }
+  100% { opacity: 1; transform: translateY(0)     scale(1);    }
+}
+
+@keyframes floatEmoji {
+  0%, 100% { transform: translateY(0px)  rotate(-2deg); }
+  50%       { transform: translateY(-7px) rotate(2deg);  }
+}
+
+@keyframes fireWiggle {
+  0%, 100% { transform: rotate(-8deg) scale(1);    }
+  50%       { transform: rotate( 8deg) scale(1.15); }
+}
+
+@keyframes livePing {
+  0%   { transform: scale(1);   opacity: 1;   }
+  70%  { transform: scale(2.2); opacity: 0;   }
+  100% { transform: scale(2.2); opacity: 0;   }
+}
+
+@keyframes shimmerCard {
+  0%   { background-position: -300% center; }
+  100% { background-position:  300% center; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.75; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(0,201,212,0.25); }
+  50%       { border-color: rgba(0,201,212,0.7);  }
+}
+
+@keyframes tvIdle {
+  0%, 100% { transform: scale(1);    opacity: 0.4; }
+  50%       { transform: scale(1.05); opacity: 0.6; }
+}
+
+.tv-card-enter   { animation: slideInTop 0.65s cubic-bezier(0.34,1.56,0.64,1) both; }
+.tv-emoji-float  { animation: floatEmoji  3.5s ease-in-out infinite; }
+.tv-fire-wiggle  { animation: fireWiggle  1.8s ease-in-out infinite; }
+.tv-shimmer      {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.06) 25%,
+    rgba(255,255,255,0.13) 50%,
+    rgba(255,255,255,0.06) 75%);
+  background-size: 300% 100%;
+  animation: shimmerCard 5s linear infinite;
+}
+.tv-glow-pulse   { animation: glowPulse  2s ease-in-out infinite; }
+.tv-border-glow  { animation: borderGlow 2s ease-in-out infinite; }
+.tv-count-in     { animation: countUp    0.4s ease-out both; }
+
 /* ---- Kiosk background rings ---- */
 .ring-bg {
   position: absolute;
