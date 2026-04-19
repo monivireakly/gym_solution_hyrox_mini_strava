@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-sea:       #006D77;
+  --color-sea-dark:  #004D54;
+  --color-sea-light: #E8F4F5;
+  --color-cyan:      #00C9D4;
+  --color-cyan-dim:  #83E0E5;
+  --color-bg:        #F5FAFB;
+  --color-surface:   #FFFFFF;
+  --color-text:      #0D2B2E;
+  --color-muted:     #5A7F84;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Syne', sans-serif;
+}
+
+/* ---- Animations ---- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.animate-fade-in   { animation: fadeIn  0.4s ease-out both; }
+.animate-scale-in  { animation: scaleIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+.animate-slide-up  { animation: slideUp 0.4s ease-out both; }
+
+/* ---- Kiosk background rings ---- */
+.ring-bg {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0,201,212,0.08);
+  pointer-events: none;
+}
+
+/* ---- Tactile PIN pad buttons ---- */
+.pin-key {
+  background: linear-gradient(160deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.05) 100%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-bottom-color: rgba(255,255,255,0.04);
+  box-shadow:
+    0 6px 0 rgba(0,0,0,0.35),
+    0 8px 16px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+  transition: box-shadow 0.08s ease, transform 0.08s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pin-key:active {
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.35),
+    0 2px 4px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  transform: translateY(5px);
+}
+
+.pin-key-del {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-bottom-color: rgba(0,0,0,0.2);
+  box-shadow:
+    0 4px 0 rgba(0,0,0,0.25),
+    0 6px 12px rgba(0,0,0,0.15);
+  transition: box-shadow 0.08s ease, transform 0.08s ease;
+}
+
+.pin-key-del:active {
+  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  transform: translateY(3px);
+}
+
+/* ---- Admin table ---- */
+.admin-table th {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-sea-light);
+}
+
+.admin-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #f0f7f8;
+  color: var(--color-text);
+  font-size: 0.9375rem;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tr:hover td {
+  background: #f8fcfd;
+}
